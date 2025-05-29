@@ -2,7 +2,7 @@
 
 [![PyPI Version](https://img.shields.io/pypi/v/StrictMeta)](https://pypi.org/project/StrictMeta/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/StrictMeta)](https://pypi.org/project/StrictMeta/)
-[![License](https://img.shields.io/github/license/yourusername/StrictMeta)](https://github.com/Karsten-Merkle/StrictMeta/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/yourusername/StrictMeta)](https://github.com/Karsten-Merkle/StrictMeta/blob/main/lgpl-3.0.md)
 
 A metaclass to enforce strict type checking and metadata handling for classes in Python.
 
