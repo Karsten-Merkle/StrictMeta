@@ -2,7 +2,7 @@
 
 [![PyPI Version](https://img.shields.io/pypi/v/StrictMeta)](https://pypi.org/project/StrictMeta/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/StrictMeta)](https://pypi.org/project/StrictMeta/)
-[![License](https://img.shields.io/github/license/yourusername/StrictMeta)](https://github.com/yourusername/StrictMeta/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/yourusername/StrictMeta)](https://github.com/Karsten-Merkle/StrictMeta/blob/main/LICENSE)
 
 A metaclass to enforce strict type checking and metadata handling for classes in Python.
 
@@ -99,7 +99,7 @@ Comments for each attribute are provided in the docstring of the class. These co
 
 ## Contributing
 
-Contributions are welcome! Please read the [CONTRIBUTING.md](https://github.com/yourusername/StrictMeta/blob/main/CONTRIBUTING.md) file for more information on how to contribute to this project.
+Contributions are welcome! Please read the [CONTRIBUTING.md](https://github.com/Karsten-Merkle/StrictMeta/blob/main/CONTRIBUTING.md) file for more information on how to contribute to this project.
 
 ## License
 

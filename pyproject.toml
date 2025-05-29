@@ -4,15 +4,28 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "StrictMeta"
-version = "0.1.0"
+version = "0.1.1"
 description = "A metaclass to enforce strict type checking and metadata handling for classes."
 authors = [
-    { name="Your Name", email="your.email@example.com" }
+    { name="Karsten Merkle", email="StrictMeta@karsten-merkle.de" }
 ]
 dependencies = [
     # Add any dependencies here
 ]
 requires-python = ">=3.9"
+readme = "Readme.md"
+license = "LGPL-3.0-only"
+license-files = ["lgpl-3.0.md"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[project.urls]
+Homepage = "https://github.com/Karsten-Merkle/StrictMeta"
 
 [tool.setuptools]
 package-dir = {"" = "."}
