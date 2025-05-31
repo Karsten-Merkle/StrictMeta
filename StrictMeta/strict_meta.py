@@ -251,13 +251,12 @@ class StrictMeta(type):
         if not isinstance(value, expected_type):
             raise TypeError(f"Cannot set attribute '{name}' to value of type {type(value).__name__}. Expected type is {expected_type.__name__}.")
 
-T = TypeVar('T')
 
-def strict(cls: Type[T] = None) -> StrictMeta:
+def strict(cls: type) -> type:
     """ Class decorator for classes to use StrictMeta as metaclass.
 
     :param cls: The class to be decorated.
-    :type cls: type | None
+    :type cls: type
     :return: A new class with StrictMeta as its metaclass.
     :rtype: type
     """
