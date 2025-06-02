@@ -275,6 +275,6 @@ def strict(cls: type) -> type:
     __dict["__firstlineno__"] = line_number
     __dict["__wrapped__"] = cls
 
-    newcls = StrictMeta(__name, __bases, __dict)
+    new_cls = StrictMeta(__name, __bases, __dict)
 
-    return newcls
+    return new_cls
