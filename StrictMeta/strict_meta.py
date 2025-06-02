@@ -10,9 +10,7 @@ def get_source(module_name: str) -> list[str]:
     Retrieves the source code of a module by its name.
 
     :param module_name: The name of the module to retrieve.
-    :type module_name: str
-    :return: A list of strings representing the source code lines.
-    :rtype: list[str]
+    :return: The retrieved module.
     :raises ImportError: If the module cannot be found.
     :raises FileNotFoundError: If the source code for the module could not be found.
     """
@@ -31,13 +29,10 @@ def get_inline_comment(module_name: str, class_line: int, attr_name: str) -> tup
     Retrieves the inline comment and docstring for a given attribute in a class.
 
     :param module_name: The name of the module containing the class.
-    :type module_name: str
     :param class_line: The line number where the class is defined.
-    :type class_line: int
     :param attr_name: The name of the attribute to retrieve the comment for.
-    :type attr_name: str
     :return: A tuple containing the inline comment and docstring (if any).
-    :rtype: tuple[LiteralString | None, LiteralString | None]
+    :raises SystemError: If source doesn't reflect what the parameters asked for
     """
     source = get_source(module_name)
 
@@ -80,30 +75,26 @@ def get_inline_comment(module_name: str, class_line: int, attr_name: str) -> tup
 class Comment:
     """
     Metadata class to store comments and descriptions for configuration fields.
-
-    :param default: The default value of the field (optional).
-    :type default: any
-    :param comment: A short inline comment for the field (optional).
-    :type comment: str
-    :param description: A detailed description of the field (optional).
-    :type description: str
     """
     def __init__(self, default=None, comment: str = None, description: str = None):
+        """
+        :param default: The default value of the field (optional).
+        :param comment: A short inline comment for the field (optional).
+        :param description: A detailed description of the field (optional).
+        """
         self.default = default
         self.comment = comment
         self.description = description
 
     @classmethod
-    def get_comment(cls, type_, attr: str) -> 'Comment | None':
+    def get_comment(cls, type_: type, attr: str) -> 'Comment | None':
         """
-        Retrieves the Comment object for a given class and field.
+        Retrieves the Comment object for a given class and field if available.
+        The Comment is looked up in the annotated metadata of the given attr.
 
         :param type_: The class to retrieve the comment from.
-        :type type_: type
         :param attr: The attribute name to retrieve the comment for.
-        :type attr: str
         :return: The Comment object if found, otherwise None.
-        :rtype: Comment | None
         """
         if not hasattr(type_, '__annotations__'):
             return None
@@ -122,7 +113,6 @@ class Comment:
         """Return a string representation of the Comment object.
 
         :return: String representation of the Comment object.
-        :rtype: str
         """
         return f"Comment(default={self.default}, comment='{self.comment}', description='{self.description}')"
 
@@ -137,7 +127,7 @@ class StrictMeta(type):
     and updating metadata for each annotation by adding or updating `Comment` objects.
     """
 
-    def __new__(cls, name: str, bases: tuple[type], namespace: dict[str, any]) -> type:
+    def __new__(cls, name: str, bases: tuple[type,...], namespace: dict[str, any]) -> type:
         """
         The `__new__` method of this metaclass is responsible for creating new classes.
 
@@ -150,11 +140,8 @@ class StrictMeta(type):
         - Updates the namespace with the collected and updated annotations.
 
         :param name: The name of the new class.
-        :type name: str
         :param bases: The base classes of the new class.
-        :type bases: tuple[type]
         :param namespace: The namespace of the new class.
-        :type namespace: dict[str, any]
         """
 
         # Collect annotations from the class and its bases
@@ -235,9 +222,7 @@ class StrictMeta(type):
         Override to prevent adding new class attributes and enforce type checking.
 
         :param name: The name of the attribute.
-        :type name: str
         :param value: The value of the attribute.
-        :type value: any
         :raises AttributeError: If a new attribute is attempted to be added.
         """
         if not hasattr(cls, '__annotations__') or name not in cls.__annotations__:
@@ -256,9 +241,8 @@ def strict(cls: type) -> type:
     """ Class decorator for classes to use StrictMeta as metaclass.
 
     :param cls: The class to be decorated.
-    :type cls: type
     :return: A new class with StrictMeta as its metaclass.
-    :rtype: type
+    :raises SystemError if introspection fails
     """
     __name = str(cls.__name__)
     __bases = tuple(cls.__bases__)
@@ -266,6 +250,7 @@ def strict(cls: type) -> type:
 
     source = get_source(cls.__module__)
     line_number = cls.__firstlineno__
+    # but this is the line_number of the decorator
 
     tree = ast.parse("".join(source))
     for node in ast.walk(tree):
@@ -274,6 +259,7 @@ def strict(cls: type) -> type:
                 for decorator in node.decorator_list:
                     if decorator.lineno == line_number:
                         line_number = node.lineno
+                        # now line_number is first lin number of the class
                         break
                 else:
                     continue
