@@ -110,6 +110,61 @@ class TestStrictMeta(unittest.TestCase):
         self.assertTrue(hasattr(ComplexClass, '__slots__'))
         self.assertEqual(ComplexClass.__slots__, ['x', 'y'])
 
+    def test_annotated_distinct_instances1(self):
+        comment1 = Comment(default=20, comment="Annotated comment", description="Annotated description")
+        comment2 = Comment(default=20, comment="Annotated comment", description="Annotated description")
+
+        self.assertIsNot(comment1, comment2)
+
+        class ExampleClass1(metaclass=StrictMeta):
+            x: Annotated[int, comment1] = 1  # This has a default value and a comment
+            """This is a default description"""
+
+        class ExampleClass2(metaclass=StrictMeta):
+            y: Annotated[int, comment2] = 1  # This has a default value and a comment
+            """This is a default description"""
+
+        comment_x = get_comment(ExampleClass1, 'x')
+        comment_y = get_comment(ExampleClass2, 'y')
+
+        self.assertIsNot(comment_x, comment_y)
+        self.assertEqual(comment_x.default, 20)
+        self.assertEqual(comment_y.default, 20)
+
+        # Modify comment1 and check if comment_y is affected
+        comment1.default = 30
+        self.assertNotEqual(comment_y.default, 30)
+
+    def test_annotated_distinct_instances2(self):
+        class ExampleClass1(metaclass=StrictMeta):
+            x: Annotated[int, "a"] = 1  # x has a default value and a comment
+            """This is a default description for x"""
+            y: Annotated[int, "a"] = 1  # y has a default value and a comment
+            """This is a default description for y"""
+
+        class ExampleClass2(metaclass=StrictMeta):
+            x: Annotated[int, "a"] = 1  # x has a default value and a comment
+            """This is a another default description for x"""
+            y: Annotated[int, "a"] = 1  # y has a default value and a comment
+            """This is a another default description for y"""
+
+        comment_1x = get_comment(ExampleClass1, 'x')
+        comment_1x.default = 11
+        comment_1y = get_comment(ExampleClass1, 'y')
+        comment_1y.default = 12
+        comment_2x = get_comment(ExampleClass2, 'x')
+        comment_2x.default = 13
+        comment_2y = get_comment(ExampleClass2, 'y')
+        comment_2y.default = 14
+
+        self.assertIsNot(comment_1x, comment_1y)
+        self.assertIsNot(comment_1y, comment_2x)
+        self.assertIsNot(comment_2x, comment_2y)
+        self.assertEqual(comment_1x.default, 11)
+        self.assertEqual(comment_1y.default, 12)
+        self.assertEqual(comment_2x.default, 13)
+        self.assertEqual(comment_2y.default, 14)
+
     def test_annotated_types(self):
         class AnnotatedClass(metaclass=StrictMeta):
             x: int  # This should have a Comment object
