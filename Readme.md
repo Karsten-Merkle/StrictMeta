@@ -5,6 +5,7 @@
 [![License](https://img.shields.io/github/license/yourusername/StrictMeta)](https://github.com/Karsten-Merkle/StrictMeta/blob/main/lgpl-3.0.md)
 
 A metaclass to enforce strict type checking and metadata handling for classes in Python.
+ [![License](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
 `StrictMeta` is most beneficial in environments where consistency, predictability, and clear documentation of data types are crucial. It's particularly useful for maintaining API stability across different versions or releases, ensuring that future modifications respect the original design intentions. However, it should be used with caution in performance-critical applications or when flexibility in attribute manipulation is essential.
 
