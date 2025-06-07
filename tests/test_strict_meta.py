@@ -1,7 +1,7 @@
 import unittest
 from typing import Annotated
 
-from StrictMeta import StrictMeta, Comment, strict
+from StrictMeta import StrictMeta, Comment, strict, get_comment
 
 
 class TestStrictMeta(unittest.TestCase):
@@ -17,7 +17,7 @@ class TestStrictMeta(unittest.TestCase):
             """A class with comments and descriptions."""
             x: int  # This is a comment
 
-        comment = Comment.get_comment(ExampleClass, 'x')
+        comment = get_comment(ExampleClass, 'x')
         self.assertIsInstance(comment, Comment)
         self.assertEqual(comment.comment, 'This is a comment')
         self.assertIsNone(comment.description)
@@ -27,7 +27,7 @@ class TestStrictMeta(unittest.TestCase):
             """A class with default values."""
             x: int = 10  # This has a default value
 
-        comment = Comment.get_comment(ExampleClass, 'x')
+        comment = get_comment(ExampleClass, 'x')
         self.assertIsInstance(comment, Comment)
         self.assertEqual(comment.default, 10)
         self.assertIsNone(comment.description)
@@ -39,7 +39,7 @@ class TestStrictMeta(unittest.TestCase):
             x: int = 10  # This has a default value and a comment
             """This is a detailed description of x"""
 
-        comment = Comment.get_comment(ExampleClass, 'x')
+        comment = get_comment(ExampleClass, 'x')
         self.assertIsInstance(comment, Comment)
         self.assertEqual(comment.default, 10)
         self.assertEqual(comment.description, 'This is a detailed description of x')
@@ -69,11 +69,11 @@ class TestStrictMeta(unittest.TestCase):
             x: int = 10  # This should have a Comment object with default value 10
             y: str  # This should have a Comment object without default value
 
-        comment_x = Comment.get_comment(TestClassWithComment, 'x')
+        comment_x = get_comment(TestClassWithComment, 'x')
         self.assertIsNotNone(comment_x)
         self.assertEqual(comment_x.default, 10)
 
-        comment_y = Comment.get_comment(TestClassWithComment, 'y')
+        comment_y = get_comment(TestClassWithComment, 'y')
         self.assertIsNotNone(comment_y)
         self.assertIsNone(comment_y.default)
 
@@ -115,11 +115,11 @@ class TestStrictMeta(unittest.TestCase):
             x: int  # This should have a Comment object
             y: str = "hello"  # This should have a Comment object with default value
 
-        comment_x = Comment.get_comment(AnnotatedClass, 'x')
+        comment_x = get_comment(AnnotatedClass, 'x')
         self.assertIsNotNone(comment_x)
         self.assertIsNone(comment_x.default)
 
-        comment_y = Comment.get_comment(AnnotatedClass, 'y')
+        comment_y = get_comment(AnnotatedClass, 'y')
         self.assertIsNotNone(comment_y)
         self.assertEqual(comment_y.default, "hello")
 
@@ -132,12 +132,12 @@ class TestStrictMeta(unittest.TestCase):
             """Another detailed description of y
             which covers several lines"""
 
-        comment_x = Comment.get_comment(MultiCommentClass, 'x')
+        comment_x = get_comment(MultiCommentClass, 'x')
         self.assertIsNotNone(comment_x)
         self.assertEqual(comment_x.comment, 'This is a comment')
         self.assertEqual(comment_x.description, 'This is a detailed description of x\nwhich covers several lines')
 
-        comment_y = Comment.get_comment(MultiCommentClass, 'y')
+        comment_y = get_comment(MultiCommentClass, 'y')
         self.assertIsNotNone(comment_y)
         self.assertEqual(comment_y.comment, 'Another comment')
         self.assertEqual(comment_y.description, 'Another detailed description of y\nwhich covers several lines')
@@ -149,7 +149,7 @@ class TestStrictMeta(unittest.TestCase):
             )] = 1  # This has a default value and a comment
             """This is a default description"""
 
-        comment = Comment.get_comment(ExampleClass, 'x')
+        comment = get_comment(ExampleClass, 'x')
         self.assertIsInstance(comment, Comment)
         self.assertEqual(comment.default, 20)  # Should be the Annotated default
         self.assertEqual(comment.comment, "Annotated comment")  # Should be the Annotated comment
@@ -162,7 +162,7 @@ class TestStrictMeta(unittest.TestCase):
             )] = 10  # This has a default value and a comment
             """This is a default description"""
 
-        comment = Comment.get_comment(ExampleClass, 'x')
+        comment = get_comment(ExampleClass, 'x')
         self.assertIsInstance(comment, Comment)
         self.assertEqual(comment.default, 20)  # Should be the Annotated default
         self.assertEqual(comment.comment, "Annotated comment")  # Should be the Annotated comment
