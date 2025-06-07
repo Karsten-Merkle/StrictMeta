@@ -2,10 +2,8 @@
 
 [![PyPI Version](https://img.shields.io/pypi/v/StrictMeta)](https://pypi.org/project/StrictMeta/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/StrictMeta)](https://pypi.org/project/StrictMeta/)
-[![License](https://img.shields.io/github/license/yourusername/StrictMeta)](https://github.com/Karsten-Merkle/StrictMeta/blob/main/lgpl-3.0.md)
-
-A metaclass to enforce strict type checking and metadata handling for classes in Python.
  [![License](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+A metaclass to enforce strict type checking and metadata handling for class-attributes in Python.
 
 `StrictMeta` is most beneficial in environments where consistency, predictability, and clear documentation of data types are crucial. It's particularly useful for maintaining API stability across different versions or releases, ensuring that future modifications respect the original design intentions. However, it should be used with caution in performance-critical applications or when flexibility in attribute manipulation is essential.
 
@@ -13,6 +11,7 @@ For projects where strict type enforcement is not critical but clear documentati
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [Alternatives and Related Tools](#alternatives-and-related-tools)
 - [Installation](#installation)
 - [Usage Examples](#usage-examples)
   - [Type Annotations](#type-annotations)
@@ -23,6 +22,7 @@ For projects where strict type enforcement is not critical but clear documentati
 ## Introduction
 
 StrictMeta is a metaclass that enforces strict type checking and metadata handling for classes. It ensures that all attributes in a class have proper type annotations, collects comments and descriptions from the class and its base classes, creates slots based on these annotations, and updates metadata for each annotation by adding or updating `Comment` objects.
+
 
 ### When to Use StrictMeta
 
@@ -41,6 +41,28 @@ StrictMeta is a metaclass that enforces strict type checking and metadata handli
 2. **Flexibility vs. Constraints**: If you need maximum flexibility in your class definitions (e.g., allowing attributes to change types frequently), `StrictMeta`’s rigid enforcement of types and annotations might restrict the design freedom you require. In such scenarios, a more flexible approach without strict type checking would be more appropriate.
 
 3. **Learning Curve**: For new developers joining the project, especially those less familiar with Python's typing system or the specific conventions you've adopted for `StrictMeta`, there could be a learning curve in understanding how to properly annotate classes and what metadata means. This might slow down their productivity initially until they become comfortable with your coding standards.
+
+## Alternatives and Related Tools
+
+While `StrictMeta` is designed to enforce strict type checking and metadata handling for classes, there are other tools and libraries that you might find useful depending on your specific needs. Here are a few alternatives and related tools:
+
+1. **`pydantic`**: A data validation and settings management library using Python type annotations. It provides a more flexible approach to data validation and can be used in conjunction with `StrictMeta` for more complex validation needs.
+
+   - **Website**: [pydantic](https://pydantic-docs.helpmanual.io/)
+   - **GitHub**: [pydantic GitHub](https://github.com/samuelcolvin/pydantic)
+
+2. **`marshmallow`**: An ORM/ODM/framework-agnostic library for converting complex datatypes to and from Python datatypes. It is useful for serialization and deserialization of data.
+
+   - **Website**: [marshmallow](https://marshmallow.readthedocs.io/)
+   - **GitHub**: [marshmallow GitHub](https://github.com/marshmallow-code/marshmallow)
+
+3. **`dataclasses`**: A module in the Python standard library that provides a decorator and functions for automatically adding special methods to user-defined classes. It can be used for simple data validation and serialization.
+
+   - **Documentation**: [dataclasses](https://docs.python.org/3/library/dataclasses.html)
+
+4. **`typeguard`**: A library for runtime type checking of Python programs. It can be used to enforce type annotations at runtime, similar to `StrictMeta`.
+
+   - **GitHub**: [typeguard GitHub](https://github.com/agronholm/typeguard)
 
 ## Installation
 
@@ -68,7 +90,7 @@ class AppConfig:
     """
     api_key: str  # API key used for authentication
     max_connections: int = 256  # Maximum number of simultaneous connections allowed
-    """ These are the"""
+    """ These are the maximum connections"""
     debug_mode: bool  = False  # Whether debugging is enabled or not
 
 # Example usage
